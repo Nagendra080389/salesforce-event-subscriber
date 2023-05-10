@@ -20,6 +20,10 @@ export class EventDataProvider implements vscode.TreeDataProvider<EventListData>
 
 	private nodes: EventListData[] = [];
 
+	public getNodes(): EventListData[] {
+		return this.nodes;
+	}
+
 	getTreeItem(element: EventListData): vscode.TreeItem {
 		return element;
 	}
