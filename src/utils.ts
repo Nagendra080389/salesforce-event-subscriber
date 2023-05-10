@@ -46,13 +46,13 @@ export async function execCommand(
     // Call command (disable color before for json parsing)
     const prevForceColor = process.env.FORCE_COLOR;
     process.env.FORCE_COLOR = "0";
-    let uri;
+    let urifspath;
     if (vscode.workspace.workspaceFolders) {
-        uri = vscode.workspace.workspaceFolders[0].uri;
+        urifspath = vscode.workspace.workspaceFolders[0].uri.fsPath;
     }
     const execOptions: any = {
         maxBuffer: 10000 * 10000,
-        cwd: options.cwd || uri,
+        cwd: options.cwd || urifspath,
         env: process.env,
     };
     try {

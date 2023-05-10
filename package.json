@@ -16,7 +16,7 @@
 			"activitybar": [
 				{
 					"id": "event-explorer",
-					"title": "Event Explorer",
+					"title": "Salesforce Event Subscriber",
 					"icon": "media/dep.svg"
 				}
 			]

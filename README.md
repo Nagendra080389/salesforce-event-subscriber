@@ -53,20 +53,15 @@ The extension provides the following commands:
 
 If you discover any bugs or have a feature request, please feel free to open an issue on GitHub.
 
-## Contributing
-
-Contributions are always welcome. Please refer to the contributing guidelines for more information.
-
 ## License
 
 MIT
 
 ## Contact
 
-If you have any questions or comments, please feel free to contact us.
+If you have any questions or comments, please feel free to contact me at [nagendra080389@gmail.com](mailto:nagendra080389@gmail.com)
 
 ## Disclaimer
 
-This extension is not an official Salesforce product. It is a tool created by the community to aid in Salesforce Platform Event development.
+This extension is not an official Salesforce product. It is a tool created by me to easily subscribe to streaming api channels in vsocde.
 
-Please note that this document may require some adjustments based on your specific extension features or usage.
