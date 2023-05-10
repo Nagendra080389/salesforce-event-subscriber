@@ -21,10 +21,12 @@ jobs:
 
       - name: npm install, build, and test
         run: |
-          npm install @vscode/vsce
           npm ci
           npm run compile
           npm test
+
+      - name: Install vsce
+        run: npm install -g vsce
 
       - name: Package Extension
         run: |
