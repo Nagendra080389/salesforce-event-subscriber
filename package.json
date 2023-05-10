@@ -109,7 +109,6 @@
 		"@typescript-eslint/eslint-plugin": "^5.42.0",
 		"@typescript-eslint/parser": "^5.42.0",
 		"eslint": "^8.26.0",
-		"jsforce": "^1.11.1",
 		"typescript": "^5.0.2"
 	},
 	"dependencies": {
@@ -117,6 +116,8 @@
 		"jsonc-parser": "^0.4.2",
 		"minimist": "^1.2.6",
 		"mkdirp": "^0.5.1",
-		"rimraf": "^2.6.2"
+		"rimraf": "^2.6.2",
+		"chalk": "^4.1.2",
+		"jsforce": "^1.11.1"
 	}
 }

@@ -65,3 +65,4 @@ If you have any questions or comments, please feel free to contact me at [nagend
 
 This extension is not an official Salesforce product. It is a tool created by me to easily subscribe to streaming api channels in vsocde.
 
+![demo](./media/demo/ezgif.com-resize.gif)
