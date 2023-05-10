@@ -1,0 +1,114 @@
+{
+	"name": "event-subscriber",
+	"displayName": "Salesforce Event Subscriber",
+	"description": "Subscribe to Events from Salesforce and display messages in console",
+	"version": "0.0.1",
+	"engines": {
+		"vscode": "^1.78.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [],
+	"main": "./out/extension.js",
+	"contributes": {
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "event-explorer",
+					"title": "Event Explorer",
+					"icon": "media/dep.svg"
+				}
+			]
+		},
+		"views": {
+			"event-explorer": [
+				{
+					"id": "orgData",
+					"name": "Org's Data",
+					"icon": "media/dep.svg",
+					"contextualTitle": "Org's Data"
+				},
+				{
+					"id": "eventNames",
+					"name": "Channel List",
+					"icon": "media/dep.svg",
+					"contextualTitle": "Org's Event Channels"
+				}
+			]
+		},
+		"commands": [
+			{
+				"command": "eventNames.addChannel",
+				"title": "Add"
+			},
+			{
+				"command": "eventNames.showOutputChannel",
+				"title": "Show Output Channel"
+			},
+			{
+				"command": "eventNames.deleteNode",
+				"title": "Delete",
+				"icon": {
+					"light": "resources/light/delete_light.svg",
+					"dark": "resources/dark/delete_dark.svg"
+				}
+			},
+			{
+				"command": "orgData.showData",
+				"title": "Show Sensitive Data"
+			}
+		],
+		"menus": {
+			"view/title": [
+				{
+					"command": "eventNames.addChannel",
+					"when": "view == eventNames"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "eventNames.showOutputChannel",
+					"when": "view == eventNames && viewItem == streamingEvent",
+					"group": "inline"
+				},
+				{
+					"command": "eventNames.deleteNode",
+					"when": "view == eventNames && viewItem == streamingEvent",
+					"group": "inline"
+				},
+				{
+					"command": "orgData.showData",
+					"when": "view == orgData && viewItem == sensitiveData",
+					"group": "inline"
+				}
+			]
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"lint": "eslint \"src/**/*.ts\""
+	},
+	"devDependencies": {
+		"@types/ftp": "^0.3.33",
+		"@types/jsforce": "^1.11.0",
+		"@types/mkdirp": "^0.5.2",
+		"@types/node": "^16.11.7",
+		"@types/rimraf": "^2.0.2",
+		"@types/vscode": "^1.73.0",
+		"@typescript-eslint/eslint-plugin": "^5.42.0",
+		"@typescript-eslint/parser": "^5.42.0",
+		"eslint": "^8.26.0",
+		"jsforce": "^1.11.1",
+		"typescript": "^5.0.2"
+	},
+	"dependencies": {
+		"ftp": "^0.3.10",
+		"jsonc-parser": "^0.4.2",
+		"minimist": "^1.2.6",
+		"mkdirp": "^0.5.1",
+		"rimraf": "^2.6.2"
+	}
+}
