@@ -3,6 +3,11 @@
 	"displayName": "Salesforce Event Subscriber",
 	"description": "Subscribe to Events from Salesforce and display messages in console",
 	"version": "0.0.1",
+	"publisher": "nagendra080389",
+	"author": {
+		"name": "Nagendra Singh",
+		"email": "nagendra080389@gmail.com"
+	},
 	"engines": {
 		"vscode": "^1.78.0"
 	},
