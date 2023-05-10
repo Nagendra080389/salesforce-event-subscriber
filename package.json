@@ -4,6 +4,7 @@
 	"description": "Subscribe to Events from Salesforce and display messages in console",
 	"version": "0.0.2",
 	"publisher": "nagendra080389",
+	"icon": "media/dep.png",
 	"author": {
 		"name": "Nagendra Singh",
 		"email": "nagendra080389@gmail.com"
