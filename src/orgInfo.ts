@@ -65,7 +65,7 @@ export class OrgInfoListProvider implements vscode.TreeDataProvider<OrgData> {
 			resultElement.value,
 			'nonSensitiveData',
 			{
-				command: '',
+				command: 'orgData.selectedData',
 				title: '',
 				arguments: []
 			}
@@ -78,7 +78,7 @@ export class OrgInfoListProvider implements vscode.TreeDataProvider<OrgData> {
 			authDetails.accessToken,
 			'sensitiveData',
 			{
-				command: '',
+				command: 'orgData.selectedData',
 				title: '',
 				arguments: []
 			}
@@ -90,7 +90,7 @@ export class OrgInfoListProvider implements vscode.TreeDataProvider<OrgData> {
 			authDetails.apiVersion,
 			'nonSensitiveData',
 			{
-				command: '',
+				command: 'orgData.selectedData',
 				title: '',
 				arguments: []
 			}
@@ -102,7 +102,7 @@ export class OrgInfoListProvider implements vscode.TreeDataProvider<OrgData> {
 			authDetails.connectedStatus,
 			'nonSensitiveData',
 			{
-				command: '',
+				command: 'orgData.selectedData',
 				title: '',
 				arguments: []
 			}
@@ -114,7 +114,7 @@ export class OrgInfoListProvider implements vscode.TreeDataProvider<OrgData> {
 			authDetails.id,
 			'nonSensitiveData',
 			{
-				command: '',
+				command: 'orgData.selectedData',
 				title: '',
 				arguments: []
 			}
@@ -126,7 +126,7 @@ export class OrgInfoListProvider implements vscode.TreeDataProvider<OrgData> {
 			authDetails.instanceUrl,
 			'nonSensitiveData',
 			{
-				command: '',
+				command: 'orgData.selectedData',
 				title: '',
 				arguments: []
 			}
@@ -138,7 +138,7 @@ export class OrgInfoListProvider implements vscode.TreeDataProvider<OrgData> {
 			authDetails.sfdxAuthUrl,
 			'sensitiveData',
 			{
-				command: '',
+				command: 'orgData.selectedData',
 				title: '',
 				arguments: []
 			}
@@ -150,7 +150,7 @@ export class OrgInfoListProvider implements vscode.TreeDataProvider<OrgData> {
 			authDetails.username,
 			'nonSensitiveData',
 			{
-				command: '',
+				command: 'orgData.selectedData',
 				title: '',
 				arguments: []
 			}

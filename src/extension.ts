@@ -5,6 +5,8 @@ import * as vscode from 'vscode';
 import {OrgInfoListProvider, OrgData} from './orgInfo';
 import {EventDataProvider, EventListData} from "./eventListData";
 
+let eventDataProvider: EventDataProvider;
+
 export function activate(context: vscode.ExtensionContext) {
 	const rootPath = (vscode.workspace.workspaceFolders && (vscode.workspace.workspaceFolders.length > 0))
 		? vscode.workspace.workspaceFolders[0].uri.fsPath : undefined;
@@ -12,11 +14,14 @@ export function activate(context: vscode.ExtensionContext) {
 	const orgDataProvider = new OrgInfoListProvider(rootPath);
 	vscode.window.registerTreeDataProvider('orgData', orgDataProvider);
 
-	const eventDataProvider = new EventDataProvider(rootPath);
+	eventDataProvider = new EventDataProvider(rootPath);
 	vscode.window.registerTreeDataProvider('eventNames', eventDataProvider);
 
 	vscode.commands.registerCommand('eventNames.deleteEntry', (node: EventListData) => vscode.window.showInformationMessage(`Successfully called delete entry on ${node.label}.`));
 	vscode.commands.registerCommand('eventNames.editEntry', (node: EventListData) => vscode.window.showInformationMessage(`Successfully called delete entry on ${node.label}.`));
+	vscode.commands.registerCommand('orgData.selectedData', (node: OrgData) => {
+		//For future use case
+	});
 
 	vscode.commands.registerCommand('orgData.showData', async (node: OrgData) => {
 		vscode.window.showInformationMessage(`You can copy this data from here :  ${node.sensitiveData}`);
@@ -41,4 +46,24 @@ export function activate(context: vscode.ExtensionContext) {
 		await node.outputChannel.show();
 	});
 
+}
+
+export function deactivate() {
+	vscode.window.showInformationMessage('Successfully called deactivate method');
+	try {
+		if (eventDataProvider) {
+			for (const node of eventDataProvider.getNodes()) {
+				if (node.subscription) {
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+					// @ts-ignore
+					node.subscription.unsubscribe();
+				}
+				node.outputChannel.dispose();
+			}
+		}
+	}catch (error) {
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore
+		vscode.window.showErrorMessage(error.message);
+	}
 }

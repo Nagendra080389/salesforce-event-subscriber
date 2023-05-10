@@ -2,7 +2,7 @@
 	"name": "event-subscriber",
 	"displayName": "Salesforce Event Subscriber",
 	"description": "Subscribe to Events from Salesforce and display messages in console",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"publisher": "nagendra080389",
 	"icon": "media/dep.png",
 	"author": {
@@ -66,6 +66,10 @@
 			{
 				"command": "orgData.showData",
 				"title": "Show Sensitive Data"
+			},
+			{
+				"command": "orgData.selectedData",
+				"title": "Selected Data"
 			}
 		],
 		"menus": {
