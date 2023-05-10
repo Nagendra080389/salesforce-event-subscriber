@@ -21,6 +21,7 @@ jobs:
 
       - name: npm install, build, and test
         run: |
+          npm install @vscode/vsce
           npm ci
           npm run compile
           npm test
