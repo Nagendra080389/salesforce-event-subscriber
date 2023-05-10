@@ -46,9 +46,13 @@ export async function execCommand(
     // Call command (disable color before for json parsing)
     const prevForceColor = process.env.FORCE_COLOR;
     process.env.FORCE_COLOR = "0";
+    let uri;
+    if (vscode.workspace.workspaceFolders) {
+        uri = vscode.workspace.workspaceFolders[0].uri;
+    }
     const execOptions: any = {
         maxBuffer: 10000 * 10000,
-        cwd: options.cwd || vscode.workspace.rootPath,
+        cwd: options.cwd || uri,
         env: process.env,
     };
     try {
@@ -74,8 +78,8 @@ export async function execCommand(
         console.timeEnd(command);
         process.env.FORCE_COLOR = prevForceColor;
         // Display error in red if not json
-        if (!command.includes("--json") || options.fail === true) {
-            if (options.fail === true) {
+        if (!command.includes("--json") || options.fail) {
+            if (options.fail) {
                 Logger.log(`ERROR: ${e.stdout}\n${e.stderr}`);
                 throw e;
             }
