@@ -63,6 +63,6 @@ If you have any questions or comments, please feel free to contact me at [nagend
 
 ## Disclaimer
 
-This extension is not an official Salesforce product. It is a tool created by me to easily subscribe to streaming api channels in vsocde.
+This extension is not an official Salesforce product. It is a tool created by me to easily subscribe to streaming api channels in vscode.
 
-![demo](./media/demo/ezgif.com-resize.gif)
+<video src="media/demo/demo.mp4" controls title="Salesforce Streaming Subscriber Demo"></video>
