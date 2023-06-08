@@ -4,10 +4,13 @@ import * as vscode from 'vscode';
 
 import {OrgInfoListProvider, OrgData} from './orgInfo';
 import {EventDataProvider, EventListData} from "./eventListData";
+import { Logger } from './logger';
 
 let eventDataProvider: EventDataProvider;
 
 export function activate(context: vscode.ExtensionContext) {
+
+	const logger = new Logger(vscode.window);
 	const rootPath = (vscode.workspace.workspaceFolders && (vscode.workspace.workspaceFolders.length > 0))
 		? vscode.workspace.workspaceFolders[0].uri.fsPath : undefined;
 

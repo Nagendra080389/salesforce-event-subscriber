@@ -2,6 +2,7 @@ let loggerInstance: Logger;
 
 export class Logger {
 	outputChannel: any;
+	
 
 	constructor(vsCodeWindow: any) {
 		this.outputChannel = vsCodeWindow.createOutputChannel("Streaming Subscriber");
