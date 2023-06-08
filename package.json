@@ -2,7 +2,7 @@
 	"name": "event-subscriber",
 	"displayName": "Salesforce Event Subscriber",
 	"description": "Subscribe to Events from Salesforce and display messages in console",
-	"version": "0.0.5",
+	"version": "0.0.6",
 	"publisher": "nagendra080389",
 	"icon": "media/dep.png",
 	"author": {

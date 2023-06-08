@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
 import {execSfdxJson} from "./utils";
+import { Logger } from './logger';
 
 export let accessTokenFromOrg = '';
 export let instanceURLFromOrg = '';
@@ -17,21 +18,27 @@ export class OrgInfoListProvider implements vscode.TreeDataProvider<OrgData> {
 	}
 
 	getChildren(element?: OrgData): Thenable<OrgData[]> {
-		if (!this.workspaceRoot) {
-			vscode.window.showInformationMessage('No sfdx project in empty workspace');
-			return Promise.resolve([]);
-		}
-
-		if (element) {
-			return Promise.resolve(this.fetchOrgDetails());
-		} else {
-			const sfdxCofigExists = path.join(this.workspaceRoot, '.sfdx/sfdx-config.json');
-			if (this.pathExists(sfdxCofigExists)) {
-				return Promise.resolve(this.fetchOrgDetails());
-			} else {
-				vscode.window.showInformationMessage('Workspace has no sfdx-config.json');
+		try {
+			if (!this.workspaceRoot) {
+				vscode.window.showInformationMessage('No sfdx project in empty workspace');
 				return Promise.resolve([]);
 			}
+	
+			if (element) {
+				return Promise.resolve(this.fetchOrgDetails());
+			} else {
+				const sfdxCofigExists = path.join(this.workspaceRoot, '.sfdx/sfdx-config.json');
+				if (this.pathExists(sfdxCofigExists)) {
+					return Promise.resolve(this.fetchOrgDetails());
+				} else {
+					vscode.window.showInformationMessage('Workspace has no sfdx-config.json');
+					return Promise.resolve([]);
+				}
+			}
+		} catch (error: any) {
+			Logger.log(`ERROR: ${error.stdout}\n${error.stderr}`);
+			vscode.window.showErrorMessage('OrgInfo failed to load');
+			return Promise.resolve([]);
 		}
 
 	}
