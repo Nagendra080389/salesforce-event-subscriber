@@ -58,7 +58,7 @@ export class OrgInfoListProvider implements vscode.TreeDataProvider<OrgData> {
 				output: false,
 			});
 
-			Logger.log(`INFO: sfdxJson ${JSON.stringify(sfdxJson)}`);
+			Logger.log(`INFO: sfdxJson ${sfdxJson}`);
 			const resultElement = sfdxJson.result[0];
 			let authDetails = await execSfdxJson('sf org display -o ' + resultElement.value +' --verbose', this, {
 				fail: false,
@@ -165,6 +165,7 @@ export class OrgInfoListProvider implements vscode.TreeDataProvider<OrgData> {
 					arguments: []
 				}
 			));
+			
 		} catch (error : any) {
 			Logger.log(`ERROR: ${error.stdout}\n${error.stderr}`);
 		}

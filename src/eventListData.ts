@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
-import {EventEmitter} from 'events';
-import {Connection} from 'jsforce';
-import {accessTokenFromOrg, instanceURLFromOrg} from "./orgInfo";
-import {Logger} from "./logger";
+import { EventEmitter } from 'events';
+import { Connection } from 'jsforce';
+import { accessTokenFromOrg, instanceURLFromOrg } from "./orgInfo";
+import { Logger } from "./logger";
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -15,7 +15,15 @@ export class EventDataProvider implements vscode.TreeDataProvider<EventListData>
 		this._onDidChangeTreeData.fire();
 	}
 
-	constructor(private workspaceRoot: string | undefined) {
+	constructor(private workspaceRoot: string | undefined, private context: vscode.ExtensionContext) {
+		const savedNodes = context.workspaceState.get<EventListData[]>('nodes', []);
+		this.nodes = savedNodes.map(nodeData => {
+			if (typeof nodeData.label === 'string') {
+				return new EventListData(nodeData.label, nodeData.command);
+			} else {
+				throw new Error('Invalid label type');
+			}
+		});
 	}
 
 	private nodes: EventListData[] = [];
@@ -30,14 +38,17 @@ export class EventDataProvider implements vscode.TreeDataProvider<EventListData>
 
 	async addNode(commandId: string): Promise<void> {
 
-		const nodeName = await vscode.window.showInputBox({ prompt: 'Enter the full name, for eg: Platform event starts with \'/event/eventname__e\', CDC starts with \'/data/ChangeEventName\' etc ', title:'Enter the channel/CDC/Topic name' });
+		const nodeName = await vscode.window.showInputBox({ prompt: 'Enter the full name, for eg: Platform event starts with \'/event/eventname__e\', CDC starts with \'/data/ChangeEventName\' etc ', title: 'Enter the channel/CDC/Topic name' });
 		Logger.log(`[sf-streaming-subscriber][addNode] Channel Name is ->  ${nodeName}`);
 		if (nodeName) {
-			this.nodes.push(new EventListData(nodeName, {
+			const newNode = new EventListData(nodeName, {
 				command: commandId,
 				title: nodeName,
 				arguments: [nodeName],
-			}));
+			});
+			newNode.commandRun = false;
+			this.nodes.push(newNode);
+			await this.context.workspaceState.update('nodes', this.nodes);
 			this.refresh();
 		}
 	}
@@ -74,27 +85,31 @@ export class EventDataProvider implements vscode.TreeDataProvider<EventListData>
 		const node = this.nodes.find(n => n.label === nodeLabel);
 		Logger.log(`[sf-streaming-subscriber][runNodeCommand] Node selected is ->  ${nodeLabel}`);
 		if (node && node.command && !node.commandRun) {
-			try{
-				// Connect to Salesforce
-				const conn = await this.connectToSalesforce();
+			if (accessTokenFromOrg) {
+				try {
+					// Connect to Salesforce
+					const conn = await this.connectToSalesforce();
 
-				// Subscribe to the platform event
-				this.subscribeToPlatformEvent(conn, node);
-				vscode.window.showInformationMessage('Subscribed successfully to '+nodeLabel);
-			} catch (error){
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-ignore
-				vscode.window.showErrorMessage(error.message);
-			} finally {
-				//make commandRun as true so that when user clicks the event again we don't keep subscribing it.
-				node.commandRun = true;
+					// Subscribe to the platform event
+					this.subscribeToPlatformEvent(conn, node);
+					vscode.window.showInformationMessage('Subscribed successfully to ' + nodeLabel);
+				} catch (error) {
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+					// @ts-ignore
+					vscode.window.showErrorMessage(error.message);
+				} finally {
+					//make commandRun as true so that when user clicks the event again we don't keep subscribing it.
+					node.commandRun = true;
+				}
+
+				// Refresh the tree view
+				this.refresh();
+			} else {
+				vscode.window.showInformationMessage('Wait for the org data to appear, try resubscribing after that.');
 			}
-
-			// Refresh the tree view
-			this.refresh();
 		} else {
-			if(node?.commandRun && !fromButton){
-				vscode.window.showInformationMessage('Already subscribed successfully to '+nodeLabel);
+			if (node?.commandRun && !fromButton) {
+				vscode.window.showInformationMessage('Already subscribed successfully to ' + nodeLabel);
 			}
 		}
 	}
@@ -104,7 +119,7 @@ export class EventDataProvider implements vscode.TreeDataProvider<EventListData>
 		const channel = node.label;
 		let subscription;
 		if (typeof channel === "string") {
-			subscription = conn.streaming.topic(channel).subscribe( (message) => {
+			subscription = conn.streaming.topic(channel).subscribe((message) => {
 				node.outputChannel.appendLine(JSON.stringify(message));
 			});
 		}
@@ -113,7 +128,7 @@ export class EventDataProvider implements vscode.TreeDataProvider<EventListData>
 
 
 	private async connectToSalesforce(): Promise<Connection> {
-		return new Connection({accessToken: accessTokenFromOrg, instanceUrl: instanceURLFromOrg});
+		return new Connection({ accessToken: accessTokenFromOrg, instanceUrl: instanceURLFromOrg });
 	}
 
 	async deleteNode(nodeLabel: EventListData): Promise<void> {
@@ -133,6 +148,8 @@ export class EventDataProvider implements vscode.TreeDataProvider<EventListData>
 
 			// Remove the node from the nodes array
 			this.nodes.splice(nodeIndex, 1);
+
+			await this.context.workspaceState.update('nodes', this.nodes);
 
 			// Refresh the tree view
 			this.refresh();

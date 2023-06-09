@@ -17,7 +17,7 @@ export function activate(context: vscode.ExtensionContext) {
 	const orgDataProvider = new OrgInfoListProvider(rootPath);
 	vscode.window.registerTreeDataProvider('orgData', orgDataProvider);
 
-	eventDataProvider = new EventDataProvider(rootPath);
+	eventDataProvider = new EventDataProvider(rootPath, context);
 	vscode.window.registerTreeDataProvider('eventNames', eventDataProvider);
 
 	vscode.commands.registerCommand('eventNames.deleteEntry', (node: EventListData) => vscode.window.showInformationMessage(`Successfully called delete entry on ${node.label}.`));
