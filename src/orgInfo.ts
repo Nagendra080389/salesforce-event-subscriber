@@ -52,116 +52,122 @@ export class OrgInfoListProvider implements vscode.TreeDataProvider<OrgData> {
 
 	private async getTargetOrgName(): Promise<OrgData[]> {
 		const items: any = [];
-		const sfdxJson = await execSfdxJson('sf config get target-org', this, {
-			fail: false,
-			output: false,
-		});
-		const resultElement = sfdxJson.result[0];
-		let authDetails = await execSfdxJson('sf org display -o ' + resultElement.value +' --verbose', this, {
-			fail: false,
-			output: false,
-		});
+		try {
+			const sfdxJson = await execSfdxJson('sf config get target-org', this, {
+				fail: false,
+				output: false,
+			});
 
-		authDetails = authDetails.result;
-		accessTokenFromOrg = authDetails.accessToken;
-		instanceURLFromOrg = authDetails.instanceUrl;
-		items.push(new OrgData(
-			'Connected Org: ' + resultElement.value,
-			'',
-			vscode.TreeItemCollapsibleState.None,
-			resultElement.value,
-			'nonSensitiveData',
-			{
-				command: 'orgData.selectedData',
-				title: '',
-				arguments: []
-			}
-		));
-
-		items.push(new OrgData(
-			'Access Token: ' ,
-			'',
-			vscode.TreeItemCollapsibleState.None,
-			authDetails.accessToken,
-			'sensitiveData',
-			{
-				command: 'orgData.selectedData',
-				title: '',
-				arguments: []
-			}
-		));
-		items.push(new OrgData(
-			'Api Version: ' + authDetails.apiVersion,
-			'',
-			vscode.TreeItemCollapsibleState.None,
-			authDetails.apiVersion,
-			'nonSensitiveData',
-			{
-				command: 'orgData.selectedData',
-				title: '',
-				arguments: []
-			}
-		));
-		items.push(new OrgData(
-			'Connected Status: ' + authDetails.connectedStatus,
-			'',
-			vscode.TreeItemCollapsibleState.None,
-			authDetails.connectedStatus,
-			'nonSensitiveData',
-			{
-				command: 'orgData.selectedData',
-				title: '',
-				arguments: []
-			}
-		));
-		items.push(new OrgData(
-			'Org Id: ' + authDetails.id,
-			'',
-			vscode.TreeItemCollapsibleState.None,
-			authDetails.id,
-			'nonSensitiveData',
-			{
-				command: 'orgData.selectedData',
-				title: '',
-				arguments: []
-			}
-		));
-		items.push(new OrgData(
-			'Instance URL: ' + authDetails.instanceUrl,
-			'',
-			vscode.TreeItemCollapsibleState.None,
-			authDetails.instanceUrl,
-			'nonSensitiveData',
-			{
-				command: 'orgData.selectedData',
-				title: '',
-				arguments: []
-			}
-		));
-		items.push(new OrgData(
-			'SfdxAuthUrl : ',
-			'',
-			vscode.TreeItemCollapsibleState.None,
-			authDetails.sfdxAuthUrl,
-			'sensitiveData',
-			{
-				command: 'orgData.selectedData',
-				title: '',
-				arguments: []
-			}
-		));
-		items.push(new OrgData(
-			'Username : ' + authDetails.username,
-			'',
-			vscode.TreeItemCollapsibleState.None,
-			authDetails.username,
-			'nonSensitiveData',
-			{
-				command: 'orgData.selectedData',
-				title: '',
-				arguments: []
-			}
-		));
+			Logger.log(`INFO: sfdxJson ${JSON.stringify(sfdxJson)}`);
+			const resultElement = sfdxJson.result[0];
+			let authDetails = await execSfdxJson('sf org display -o ' + resultElement.value +' --verbose', this, {
+				fail: false,
+				output: false,
+			});
+	
+			authDetails = authDetails.result;
+			accessTokenFromOrg = authDetails.accessToken;
+			instanceURLFromOrg = authDetails.instanceUrl;
+			items.push(new OrgData(
+				'Connected Org: ' + resultElement.value,
+				'',
+				vscode.TreeItemCollapsibleState.None,
+				resultElement.value,
+				'nonSensitiveData',
+				{
+					command: 'orgData.selectedData',
+					title: '',
+					arguments: []
+				}
+			));
+	
+			items.push(new OrgData(
+				'Access Token: ' ,
+				'',
+				vscode.TreeItemCollapsibleState.None,
+				authDetails.accessToken,
+				'sensitiveData',
+				{
+					command: 'orgData.selectedData',
+					title: '',
+					arguments: []
+				}
+			));
+			items.push(new OrgData(
+				'Api Version: ' + authDetails.apiVersion,
+				'',
+				vscode.TreeItemCollapsibleState.None,
+				authDetails.apiVersion,
+				'nonSensitiveData',
+				{
+					command: 'orgData.selectedData',
+					title: '',
+					arguments: []
+				}
+			));
+			items.push(new OrgData(
+				'Connected Status: ' + authDetails.connectedStatus,
+				'',
+				vscode.TreeItemCollapsibleState.None,
+				authDetails.connectedStatus,
+				'nonSensitiveData',
+				{
+					command: 'orgData.selectedData',
+					title: '',
+					arguments: []
+				}
+			));
+			items.push(new OrgData(
+				'Org Id: ' + authDetails.id,
+				'',
+				vscode.TreeItemCollapsibleState.None,
+				authDetails.id,
+				'nonSensitiveData',
+				{
+					command: 'orgData.selectedData',
+					title: '',
+					arguments: []
+				}
+			));
+			items.push(new OrgData(
+				'Instance URL: ' + authDetails.instanceUrl,
+				'',
+				vscode.TreeItemCollapsibleState.None,
+				authDetails.instanceUrl,
+				'nonSensitiveData',
+				{
+					command: 'orgData.selectedData',
+					title: '',
+					arguments: []
+				}
+			));
+			items.push(new OrgData(
+				'SfdxAuthUrl : ',
+				'',
+				vscode.TreeItemCollapsibleState.None,
+				authDetails.sfdxAuthUrl,
+				'sensitiveData',
+				{
+					command: 'orgData.selectedData',
+					title: '',
+					arguments: []
+				}
+			));
+			items.push(new OrgData(
+				'Username : ' + authDetails.username,
+				'',
+				vscode.TreeItemCollapsibleState.None,
+				authDetails.username,
+				'nonSensitiveData',
+				{
+					command: 'orgData.selectedData',
+					title: '',
+					arguments: []
+				}
+			));
+		} catch (error : any) {
+			Logger.log(`ERROR: ${error.stdout}\n${error.stderr}`);
+		}
 		return items;
 	}
 

@@ -50,6 +50,7 @@ export async function execCommand(
     if (vscode.workspace.workspaceFolders) {
         urifspath = vscode.workspace.workspaceFolders[0].uri.fsPath;
     }
+    Logger.log(`INFO: urifspath ${JSON.stringify(urifspath)}`);
     const execOptions: any = {
         maxBuffer: 10000 * 10000,
         cwd: options.cwd || urifspath,
