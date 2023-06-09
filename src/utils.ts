@@ -81,7 +81,7 @@ export async function execCommand(
         // Display error in red if not json
         if (!command.includes("--json") || options.fail) {
             if (options.fail) {
-                Logger.log(`ERROR: ${e.stdout}\n${e.stderr}`);
+                Logger.log(`ERROR: ${e.stdout} \n ${e.stderr}`);
                 throw e;
             }
         }
@@ -130,6 +130,7 @@ export async function execCommand(
 }
 
 export async function execShell(cmd: string, execOptions: any) {
+    Logger.log('execShell -> ' + isMultithreadActive());
     if (isMultithreadActive()) {
         // Use worker to perform CLI command
         return new Promise<any>((resolve, reject) => {
@@ -151,11 +152,17 @@ export async function execShell(cmd: string, execOptions: any) {
         return new Promise<any>((resolve, reject) => {
             childProcess.exec(cmd, execOptions, (error, stdout, stderr) => {
                 if (error) {
-                    return reject(error);
+                    const enhancedError = {
+                        ...error, 
+                        stdout: stdout ?? 'No stdout', 
+                        stderr: stderr ?? 'No stderr'
+                    };
+                    return reject(enhancedError);
                 }
                 return resolve({ stdout: stdout, stderr: stderr });
             });
         });
+        
     }
 }
 
